@@ -63,22 +63,18 @@ if __name__ == '__main__':
         params = {'DESIGNATION':[], 'SCORE':[], 'DISCOVERY':[], 'RA':[], 'DEC':[], 'V_MAG':[], 'UPDATE':[], 'OBSERVATION':[]
                   , 'ARC':[], 'H_MAG':[], 'NONE_SEEN':[]}
         for neo in neos:
-            fps = [i for i in neo.split('UT')[0].strip(' ').split(' ') if i != '']
-            lps = [i for i in neo.split('UT')[1].strip(' ').split(' ') if i != '']
-            if (fps[8] + fps[9] + fps[10]) != 'MovedtothePCCP':
-                params['DESIGNATION'].extend([fps[0]])
-                params['SCORE'].extend([fps[1]])
-                params['DISCOVERY'].extend([fps[2] + fps[3] + fps[4]])
-                params['RA'].extend([fps[5]])
-                params['DEC'].extend([fps[6]])
-                params['V_MAG'].extend([fps[7]])
-                params['UPDATE'].extend([fps[8] + fps[9] + fps[10]])
-                params['OBSERVATION'].extend([lps[0]])
-                params['ARC'].extend([lps[1]])
-                params['H_MAG'].extend([lps[2]])
-                params['NONE_SEEN'].extend([lps[3]])
-            else:
-                pass
+            eles = neo.split()
+            params['DESIGNATION'].extend([eles[0]])
+            params['SCORE'].extend([eles[1]])
+            params['DISCOVERY'].extend([eles[2] + eles[3] + eles[4]])
+            params['RA'].extend([eles[5]])
+            params['DEC'].extend([eles[6]])
+            params['V_MAG'].extend([eles[7]])
+            params['UPDATE'].extend([eles[8] + eles[9] + eles[10] + eles[11]])
+            params['OBSERVATION'].extend([eles[12]])
+            params['ARC'].extend([eles[13]])
+            params['H_MAG'].extend([eles[14]])
+            params['NONE_SEEN'].extend([eles[15]])
 
         # Select the NEOs by "Score >= 70" and "V <= 18".
         scoreThres = 70
@@ -131,7 +127,7 @@ if __name__ == '__main__':
                       subject      = 'LWT has "NO" observation today!', 
                       message      = 'Bonjour,\n\nPlease run the script of Prof. Ngeow today!\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw', 
                       login        = 'lwt@gm.astro.ncu.edu.tw', 
-                      password     = '')
+                      password     = 'lulin1478963')
             sys.exit()
         else:
             pass
@@ -268,11 +264,11 @@ if __name__ == '__main__':
                 with open(script_path, 'a') as file:
                     file.write(';\n#CHAIN D:/LWTdata/LWT_{0}/lulinLWT/{0}-{1}.txt'.format(date, str(num+1).zfill(3)))
             else:
-                cngeowPaths = glob("C:/Users/USER/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")
+                cngeowPaths = glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")
                 cngeowModTimes = [os.path.getctime(i) for i in cngeowPaths]
                 cngeow = cngeowPaths[cngeowModTimes.index(max(cngeowModTimes))].split('\\')[1]
                 with open(script_path, 'a') as file:
-                    file.write(";\n#CHAIN C:/Users/USER/Documents/ACP Astronomy/Plans/{}".format(cngeow))
+                    file.write(";\n#CHAIN C:/Users/User/Documents/ACP Astronomy/Plans/{}".format(cngeow))
 
         with open(totScriptPath, 'a') as file:
             file.write(';\n; End of Plan\n')
@@ -292,7 +288,7 @@ if __name__ == '__main__':
                   subject      = '{} - LWT NEO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
                   message      = 'Bonjour,\n\nI will have an observation from UTC {} to UTC {} tonight!\nOBJECT: {}\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw'.format(breakOn, breakOff, tempDesig_ok), 
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
         
         # Wait until tomorrow morning (9 am).
         nowH = datetime.now().strftime("%H")
@@ -310,7 +306,7 @@ if __name__ == '__main__':
         driver.find_element_by_id("identifierId").send_keys(Keys.ENTER)
         time.sleep(3)
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("")
+        driver.find_element_by_name("password").send_keys("lulin1478963")
         driver.find_element_by_name("password").send_keys(Keys.ENTER)
         time.sleep(10)
         
@@ -374,4 +370,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoACPscript ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')

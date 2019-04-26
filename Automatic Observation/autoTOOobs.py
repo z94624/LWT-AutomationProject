@@ -44,23 +44,23 @@ def reboot():
         # otherwise, run other user's script.
         if hr_now < (obsEnd+8):
             run_dlg['ComboBoxEx'].type_keys("D:\\LWTdata\\LWT_{0}\\lulinLWT\\{0}-{1}_TOO.txt".format(date, tooNameAbr))
-            run_dlg['&Open'].Click()
+            run_dlg['&Open'].click()
             time.sleep(300)
             reboot()
         elif (glob("D:/LWTdata/LWT_{0}/lulinLWT/{0}-000.txt".format(date)) != []) and (hr_now < neoEnd+8):
             run_dlg['ComboBoxEx'].type_keys("D:\\LWTdata\\LWT_{0}\\lulinLWT\\{0}-000.txt".format(date))
-            run_dlg['&Open'].Click()
+            run_dlg['&Open'].click()
             time.sleep(300)
             reboot()
-        elif (glob("C:/Users/USER/Documents/ACP Astronomy/Plans/cngeow*LWT.txt") != []) and (hr_now < obsOff+8):
-            cngeow = glob("C:/Users/USER/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")[0].split('\\')[1]
+        elif (glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt") != []) and (hr_now < obsOff+8):
+            cngeow = glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")[0].split('\\')[1]
             run_dlg['ComboBoxEx'].type_keys(cngeow)
             time.sleep(3)
-            run_dlg['&Open'].Click()
+            run_dlg['&Open'].click()
             time.sleep(300)
             reboot()
         else:
-            run_dlg['Cancel'].Click()
+            run_dlg['Cancel'].click()
     except:
         time.sleep(300)
         reboot()
@@ -140,7 +140,7 @@ if __name__ == '__main__':
                   subject      = '{} - [{}] LWT ToO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S"), usrName),
                   message      = "Dear {},\n\nYour observation of {} will begin from UTC{} to UTC{}!\nMerci beaucoup!\n\nAmuse-toi bien,\nThe LWT Automation System\nemail: lwt@gm.astro.ncu.edu.tw",
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
         
         # Basic information of the ACP script.
         TITLE = "; NEO_TOO_OBS\n"
@@ -176,11 +176,11 @@ if __name__ == '__main__':
             pass
         if glob("D:/LWTdata/LWT_{0}/lulinLWT/{0}-000.txt".format(date)) != []:
             CHAIN = "#CHAIN D:/LWTdata/LWT_{0}/lulinLWT/{0}-000.txt".format(date)
-        elif glob("C:/Users/USER/Documents/ACP Astronomy/Plans/cngeow*LWT.txt") != []:
-            cngeowPaths = glob("C:/Users/USER/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")
+        elif glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt") != []:
+            cngeowPaths = glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")
             cngeowModTimes = [os.path.getctime(i) for i in cngeowPaths]
             cngeow = cngeowPaths[cngeowModTimes.index(max(cngeowModTimes))].split('\\')[1]
-            CHAIN = "#CHAIN C:/Users/USER/Documents/ACP Astronomy/Plans/{}".format(cngeow)
+            CHAIN = "#CHAIN C:/Users/User/Documents/ACP Astronomy/Plans/{}".format(cngeow)
         else:
             CHAIN = ''
         
@@ -219,9 +219,9 @@ if __name__ == '__main__':
         # If the ACP is not working, open the dome; otherwise, abort the running script.
         try:
             print("Unpark then open the dome!")
-            dome_dlg['Unpark/Unhome'].Click()
+            dome_dlg['Unpark/Unhome'].click()
             time.sleep(1)
-            dome_dlg['Open'].Click()
+            dome_dlg['Open'].click()
         except:
             print("Abort the running script!")
             acp_dlg.Abort.click_input()
@@ -233,7 +233,7 @@ if __name__ == '__main__':
         script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770')
         script_dlg['ComboBoxEx'].type_keys('AcquireImages.js')
         time.sleep(1)
-        script_dlg['&Open'].Click()
+        script_dlg['&Open'].click()
         print("Choose TOO's script!")
 
         reboot()
@@ -246,4 +246,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoTOOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}\nPlease contact Huang Jian-Fong(smoBEE@astro.ncu.edu.tw) to fix the problem!".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
