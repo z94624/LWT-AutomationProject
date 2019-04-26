@@ -127,7 +127,7 @@ if __name__ == '__main__':
                       subject      = 'LWT has "NO" observation today!', 
                       message      = 'Bonjour,\n\nPlease run the script of Prof. Ngeow today!\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw', 
                       login        = 'lwt@gm.astro.ncu.edu.tw', 
-                      password     = 'lulin1478963')
+                      password     = '......')
             sys.exit()
         else:
             pass
@@ -288,7 +288,7 @@ if __name__ == '__main__':
                   subject      = '{} - LWT NEO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
                   message      = 'Bonjour,\n\nI will have an observation from UTC {} to UTC {} tonight!\nOBJECT: {}\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw'.format(breakOn, breakOff, tempDesig_ok), 
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = 'lulin1478963')
+                  password     = '......')
         
         # Wait until tomorrow morning (9 am).
         nowH = datetime.now().strftime("%H")
@@ -306,7 +306,7 @@ if __name__ == '__main__':
         driver.find_element_by_id("identifierId").send_keys(Keys.ENTER)
         time.sleep(3)
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("lulin1478963")
+        driver.find_element_by_name("password").send_keys("......")
         driver.find_element_by_name("password").send_keys(Keys.ENTER)
         time.sleep(10)
         
@@ -370,4 +370,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoACPscript ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = 'lulin1478963')
+                  password     = '......')
