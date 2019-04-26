@@ -1,4 +1,4 @@
-import os, sys, shutil, pandas as pd, numpy as np, smtplib
+import os, sys, shutil, pandas as pd, numpy as np, smtplib, requests, time
 from six.moves import urllib
 from datetime import datetime, timedelta
 from glob import glob
@@ -8,6 +8,8 @@ from photutils import make_source_mask, DAOStarFinder, CircularAperture, apertur
 from astropy.time import Time
 from astropy.wcs import WCS
 from astroML.crossmatch import crossmatch_angular
+from selenium import webdriver
+from bs4 import BeautifulSoup
 
 # Read a catalog.
 def readCat(path):
@@ -64,6 +66,25 @@ if __name__ == '__main__':
                 os.system("/astrometry/bin/solve-field {} -p -O --timestamp --ra {} --dec {} --radius 2 -t 2 -L 1.2 -H 1.25 -u app".format(path, ra, dec))
             else:
                 pass
+
+        # Find astrometric solution of the failed images by online-version Astrometry.net.
+        newOfflinePaths = glob("/LWTanaly/{}/neo_red/*.new".format(yesterday))
+        redFailPaths = [i for i in redPaths if (i.split('.')[0]+'.new') not in newOfflinePaths]
+        driver = webdriver.Chrome()
+        driver.implicitly_wait(5)
+        for path in redFailPaths:
+            driver.get("http://nova.astrometry.net/upload")
+            driver.find_element_by_id("id_file").send_keys(path)
+            driver.find_element_by_name("submit").submit()
+            time.sleep(60)
+            res = requests.get(driver.current_url)
+            soup = BeautifulSoup(res.text, 'lxml')
+            res_calib = requests.get("http://nova.astrometry.net" + soup.select("table")[2].select("a")[1]["href"])
+            soup_calib = BeautifulSoup(res_calib.text, 'lxml')
+            files = soup_calib.find(id="calibration_table").select("a")
+            job = soup_calib.find(id="user_image")["src"].split("/")[-1]
+            urllib.request.urlretrieve("http://nova.astrometry.net"+files[1]["href"], path.split('.')[0]+'.new')
+        driver.quit()
 
         # Create SExtractor catalogs in "FITS_LDAC" format for SCAMP to read.
         newPaths = glob("/LWTanaly/{}/neo_red/*.new".format(yesterday))
@@ -257,4 +278,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] ZP_Positioning.py ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
