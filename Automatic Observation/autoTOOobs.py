@@ -140,7 +140,7 @@ if __name__ == '__main__':
                   subject      = '{} - [{}] LWT ToO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S"), usrName),
                   message      = "Dear {},\n\nYour observation of {} will begin from UTC{} to UTC{}!\nMerci beaucoup!\n\nAmuse-toi bien,\nThe LWT Automation System\nemail: lwt@gm.astro.ncu.edu.tw",
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '......')
+                  password     = '')
         
         # Basic information of the ACP script.
         TITLE = "; NEO_TOO_OBS\n"
@@ -246,4 +246,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoTOOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}\nPlease contact Huang Jian-Fong(smoBEE@astro.ncu.edu.tw) to fix the problem!".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '......')
+                  password     = '')

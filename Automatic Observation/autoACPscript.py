@@ -46,9 +46,9 @@ if __name__ == '__main__':
     LWT.lon, LWT.lat, LWT.elevation, LWT.horizon = longitude, latitude, float(altitude), "-18" 
     Sun = ephem.Sun()
     Sun.compute(epoch='2000')
-    obsBegin = str(LWT.next_setting(Sun)).split(' ')[1].split(':')[0]
+    obsBegin = str(LWT.next_setting(Sun)).split()[1].split(':')[0]
     LWT.horizon = "-19.25"
-    obsStop = str(int(str(LWT.next_rising(Sun)).split(' ')[1].split(':')[0])+1)
+    obsStop = str(int(str(LWT.next_rising(Sun)).split()[1].split(':')[0])+1)
 
     # Create directories.
     dirPaths = ["D:/LWTdata/LWT_{}/lulinLWT/".format(date), "D:/LWTdata/LWT_{}/lulinLWT/neo/".format(date), "D:/LWTdata/LWT_{}/lulinLWT/others/".format(date)]
@@ -112,7 +112,7 @@ if __name__ == '__main__':
                     if (ephemeris[8:10] == day) and (ephemeris[11:13] >= obsBegin) and (ephemeris[11:13] <= obsStop):
                         begin_end_2.append(ephemeris)
                 if begin_end_2 != []:
-                    motions.append((float(begin_end_2[0].split('   ')[4].split('  ')[0])+float(begin_end_2[-1].split('   ')[4].split('  ')[0]))/2)
+                    motions.append((float(begin_end_2[0].split()[8])+float(begin_end_2[-1].split()[8]))/2)
                 else:
                     motions.append(0)
             except IndexError:
@@ -127,7 +127,7 @@ if __name__ == '__main__':
                       subject      = 'LWT has "NO" observation today!', 
                       message      = 'Bonjour,\n\nPlease run the script of Prof. Ngeow today!\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw', 
                       login        = 'lwt@gm.astro.ncu.edu.tw', 
-                      password     = '......')
+                      password     = '')
             sys.exit()
         else:
             pass
@@ -288,7 +288,7 @@ if __name__ == '__main__':
                   subject      = '{} - LWT NEO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
                   message      = 'Bonjour,\n\nI will have an observation from UTC {} to UTC {} tonight!\nOBJECT: {}\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw'.format(breakOn, breakOff, tempDesig_ok), 
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '......')
+                  password     = '')
         
         # Wait until tomorrow morning (9 am).
         nowH = datetime.now().strftime("%H")
@@ -306,7 +306,7 @@ if __name__ == '__main__':
         driver.find_element_by_id("identifierId").send_keys(Keys.ENTER)
         time.sleep(3)
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("......")
+        driver.find_element_by_name("password").send_keys("")
         driver.find_element_by_name("password").send_keys(Keys.ENTER)
         time.sleep(10)
         
@@ -370,4 +370,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoACPscript ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '......')
+                  password     = '')
