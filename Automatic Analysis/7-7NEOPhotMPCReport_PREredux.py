@@ -104,4 +104,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] Phot_Report.py ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '......')
+                  password     = '')
