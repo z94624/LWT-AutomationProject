@@ -10,8 +10,8 @@ def nowHour():
     return nowHr + nowMin/60 + nowSec/3600
 
 # Connect to the window of opened software.
-def appConnect(winTitle, winClass):
-    win_app = pywinauto.Application().connect(title_re=winTitle, class_name=winClass)
+def appConnect(winTitle, winClass, winVisible):
+    win_app = pywinauto.Application().connect(title_re=winTitle, class_name=winClass, visible_only=winVisible)
     win_dlg = win_app[winTitle]
     return win_app, win_dlg
 
@@ -32,7 +32,7 @@ def reboot():
         # Click "Run" button of the ACP to select a script from "Select a plan file" dialog.
         acp_dlg.Run.click_input()
         time.sleep(3)
-        run_app, run_dlg = appConnect('Select a plan file', '#32770')
+        run_app, run_dlg = appConnect('Select a plan file', '#32770', False)
         
         # If the ToO script exists, store the beginning time of the ToO observation.
         if glob("D:/LWTdata/LWT_{}/lulinLWT/*_TOO.txt".format(date)) != []:
@@ -124,6 +124,13 @@ if __name__ == '__main__':
         # Officina Stellare ATC02 Remote: connect to COM5 port and then open the shutter of primary mirror.
         officina_app, officina_dlg = appCheck('Officina Stellare - ATC Remote', 'win32', r"C:\Program Files (x86)\Officina Stellare\ATC-GUI.exe", 'Officina Stellare - ATC Remote v. 4.0.4.1')
         try:
+            # ERROR: The remote server returned an error: (404) Not Found.
+            time.sleep(1)
+            error_app, error_dlg = appConnect('', "#32770", True)
+            error_dlg['OK'].click()
+        except:
+            pass
+        try:
             officina_dlg.minimize()
             officina_dlg.restore()
             officina_dlg['ComboBox2'].select('COM5')
@@ -153,18 +160,30 @@ if __name__ == '__main__':
         else:
             acp_dlg['Unpark'].select()
 
-        # Auto-Bias & Dark.
+        # Connect to MaxIm DL.
         maxim_app, maxim_dlg = appCheck('MaxIm DL', 'uia', r"C:\Program Files (x86)\Diffraction Limited\MaxIm DL V5\MaxIm_DL.exe", 'MaxIm DL Pro 5')
+        time.sleep(3)
         maxim_dlg['On'].click()
+
+        # FocusMax: connect to MaxIm DL.
+        focus_app, focus_dlg = appCheck('FocusMax', 'win32', r"C:\Program Files (x86)\FocusMax\FocusMax.exe", 'FocusMax   LWT_20171017')
+        focus_stat = focus_dlg['Edit7'].texts()[0]
+        if focus_stat == 'Not Connected':
+            focus_dlg['Connect'].click()
+            focus_dlg['Connect'].click()
+        else:
+            pass
+        
+        # Auto-Bias & Dark.
         acp_dlg['Select the Script ...'].click_input()
         time.sleep(3)
-        script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770')
+        script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770', False)
         script_dlg['ComboBoxEx'].type_keys('AcquireImages.js')
         time.sleep(1)
         script_dlg['&Open'].click()
         acp_dlg.Run.click_input()
         time.sleep(3)
-        run_app, run_dlg = appConnect('Select a plan file', '#32770')
+        run_app, run_dlg = appConnect('Select a plan file', '#32770', False)
         run_dlg['ComboBoxEx'].type_keys("bias-dark.txt")
         time.sleep(1)
         run_dlg['&Open'].click()
@@ -178,21 +197,21 @@ if __name__ == '__main__':
         skyalert_app, skyalert_dlg = appCheck('SkyAlert', 'win32', r"C:\Users\User\AppData\Local\Apps\2.0\475JLOEP.26Q\DVHXWNG3.LPN\skya..tion_60722f238ee807df_0001.0000_f201e82b72b5ab68\SkyAlert.exe", 'SkyAlert')
         skyalert_dlg.minimize()
         skyalert_dlg.restore()
-        time.sleep(1)
+        time.sleep(3)
         
         # Open "Settings" tab and then "Program Settings" window of SkyAlert.
-        skyalert_dlg.set_focus()
+        # skyalert_dlg.set_focus()
         skyalert_dlg.type_keys("%s")
         skyalert_dlg.type_keys("P")
         time.sleep(1)
         
         # Open the "Save to..." dialog for saving Weather/Data File.
-        skyset_app, skyset_dlg = appConnect(' Settings', 'WindowsForms10.Window.8.app.0.141b42a_r9_ad1')
+        skyset_app, skyset_dlg = appConnect(' Settings', 'WindowsForms10.Window.8.app.0.141b42a_r9_ad1', False)
         skyset_dlg['Save to...'].click()
         time.sleep(1)
 
         # Save today's Weather/Data file.
-        skydata_app, skydata_dlg = appConnect('Choose a path and file name to save the weather data file.', '#32770')
+        skydata_app, skydata_dlg = appConnect('Choose a path and file name to save the weather data file.', '#32770', False)
         skydata_dlg['ComboBox'].type_keys('{}'.format(dateDash))
         time.sleep(1)
         skydata_dlg['Save'].click()
@@ -204,10 +223,10 @@ if __name__ == '__main__':
         if acp_weather == 'Connect':
             acp_dlg['Setup...'].select()
             time.sleep(1)
-            acppre_app, acppre_dlg = appConnect('ACP Preferences', 'ThunderRT6FormDC')
+            acppre_app, acppre_dlg = appConnect('ACP Preferences', 'ThunderRT6FormDC', False)
             acppre_dlg['Setup Weather Server...'].click_input()
             time.sleep(1)
-            wea_app, wea_dlg = appConnect('Select Clarity log file', '#32770')
+            wea_app, wea_dlg = appConnect('Select Clarity log file', '#32770', False)
             wea_dlg['ComboBox2'].select('All files (*.*)')
             time.sleep(1)
             wea_dlg['ComboBoxEx'].type_keys('{}.txt'.format(dateDash))
@@ -223,15 +242,6 @@ if __name__ == '__main__':
         # Open the "Dome Control" panel of the ACP.
         acp_dlg['Dome Control'].click_input()
 
-        # FocusMax: connect to MaxIm DL.
-        focus_app, focus_dlg = appCheck('FocusMax', 'win32', r"C:\Program Files (x86)\FocusMax\FocusMax.exe", 'FocusMax   LWT_20171017')
-        focus_stat = focus_dlg['Edit7'].texts()[0]
-        if focus_stat == 'Not Connected':
-            focus_dlg['Connect'].click()
-            focus_dlg['Connect'].click()
-        else:
-            pass
-
         # It's time for dusk flat.
         nowHR = nowHour()
         if (int(duskBegin)+8+1 - nowHR) > 0: # 1hr bearable time
@@ -241,7 +251,7 @@ if __name__ == '__main__':
                 pass
             
             # Open dome.
-            dome_app, dome_dlg = appConnect('ACP Dome Control', 'ThunderRT6FormDC')
+            dome_app, dome_dlg = appConnect('ACP Dome Control', 'ThunderRT6FormDC', False)
             try:
                 dome_dlg['Unpark/Unhome'].click()
                 time.sleep(1)
@@ -252,7 +262,7 @@ if __name__ == '__main__':
             # Run the AutoFlat system of the ACP.
             acp_dlg['Select the Script ...'].click_input()
             time.sleep(3)
-            script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770')
+            script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770', False)
             script_dlg['ComboBoxEx'].type_keys('AutoFlat.vbs')
             script_dlg['&Open'].click()
             acp_dlg.Run.click_input()
@@ -283,7 +293,7 @@ if __name__ == '__main__':
         try:
             acp_dlg['Select the Script ...'].click_input()
             time.sleep(3)
-            script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770')
+            script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770', False)
             
             script_dlg['ComboBoxEx'].type_keys('AcquireImages.js')
             time.sleep(1)
@@ -313,7 +323,7 @@ if __name__ == '__main__':
         # Run the AutoFlat system of the ACP.
         acp_dlg['Select the Script ...'].click_input()
         time.sleep(3)
-        script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770')
+        script_app, script_dlg = appConnect('ACP Observatory Control Software - Select script to run', '#32770', False)
         script_dlg['ComboBoxEx'].type_keys('AutoFlat.vbs')
         script_dlg['&Open'].click()
         acp_dlg.Run.click_input()
@@ -334,7 +344,7 @@ if __name__ == '__main__':
 
         # Close dome.
         acp_dlg['Dome Control'].click_input()
-        dome_app, dome_dlg = appConnect('ACP Dome Control', 'ThunderRT6FormDC')
+        dome_app, dome_dlg = appConnect('ACP Dome Control', 'ThunderRT6FormDC', False)
         dome_dlg['Close'].click()
 
         # Park telescope.
@@ -349,4 +359,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoNEOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
