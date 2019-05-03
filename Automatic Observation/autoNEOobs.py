@@ -145,6 +145,7 @@ if __name__ == '__main__':
 
         # ACP Observatory Control Software: connect to MaxIm DL ("Camera" tab) and TheSky ("Telescope" tab).
         acp_app, acp_dlg = appCheck('ACP Observatory Control Software', 'uia', r"C:\Program Files (x86)\ACP Obs Control\acp.exe", 'ACP Observatory Control Software')
+        acp_dlg.set_focus()
         acp_dlg['Camera'].select()
         acp_camera = acp_dlg['Camera'].items()[0].texts()[0]
         if acp_camera == 'Connect':
