@@ -165,6 +165,10 @@ if __name__ == '__main__':
         maxim_app, maxim_dlg = appCheck('MaxIm DL', 'uia', r"C:\Program Files (x86)\Diffraction Limited\MaxIm DL V5\MaxIm_DL.exe", 'MaxIm DL Pro 5')
         time.sleep(3)
         maxim_dlg['On'].click()
+        try:
+            maxim_dlg['On'].click()
+        except:
+            pass
 
         # FocusMax: connect to MaxIm DL.
         focus_app, focus_dlg = appCheck('FocusMax', 'win32', r"C:\Program Files (x86)\FocusMax\FocusMax.exe", 'FocusMax   LWT_20171017')
@@ -201,8 +205,10 @@ if __name__ == '__main__':
         time.sleep(3)
         
         # Open "Settings" tab and then "Program Settings" window of SkyAlert.
-        # skyalert_dlg.set_focus()
+        skyalert_dlg.set_focus()
+        time.sleep(1)
         skyalert_dlg.type_keys("%s")
+        time.sleep(1)
         skyalert_dlg.type_keys("P")
         time.sleep(1)
         
@@ -360,4 +366,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoNEOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = 'lulin1478963')
+                  password     = '')
