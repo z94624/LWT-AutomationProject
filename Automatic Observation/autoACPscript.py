@@ -145,7 +145,7 @@ if __name__ == '__main__':
                 group_max = max([i for i in ini_fin if i[:2] == iniSeque])
                 tempDesig_ok.append(tempDesig[ini_fin.index(group_max)])
                 iniSeque = group_max[2:]
-            except ValueError:
+            except ValueError, MemoryError:
                 break
         ini_fin_ok = []
         for candy in tempDesig_ok:
