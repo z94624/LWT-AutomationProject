@@ -140,8 +140,9 @@ if __name__ == '__main__':
         time.sleep(3)
         officina_dlg.Open.click()
 
-        # Connect to TheSky.
+        # Connect to TheSky & MaxIm DL.
         sky_app, sky_dlg = appCheck('TheSkyX Professional Edition', 'uia', r"C:\Program Files (x86)\Software Bisque\TheSkyX Professional Edition\TheSkyX.exe", 'Lulin_20171215_RMS_7b* - TheSkyX Professional Edition')
+        maxim_app, maxim_dlg = appCheck('MaxIm DL', 'uia', r"C:\Program Files (x86)\Diffraction Limited\MaxIm DL V5\MaxIm_DL.exe", 'MaxIm DL Pro 5')
 
         # ACP Observatory Control Software: connect to MaxIm DL ("Camera" tab) and TheSky ("Telescope" tab).
         acp_app, acp_dlg = appCheck('ACP Observatory Control Software', 'uia', r"C:\Program Files (x86)\ACP Obs Control\acp.exe", 'ACP Observatory Control Software')
@@ -161,9 +162,7 @@ if __name__ == '__main__':
         else:
             acp_dlg['Unpark'].select()
 
-        # Connect to MaxIm DL.
-        maxim_app, maxim_dlg = appCheck('MaxIm DL', 'uia', r"C:\Program Files (x86)\Diffraction Limited\MaxIm DL V5\MaxIm_DL.exe", 'MaxIm DL Pro 5')
-        time.sleep(3)
+        # Turn on MaxIm DL's cooler.
         maxim_dlg['On'].click()
         try:
             maxim_dlg['On'].click()
@@ -202,11 +201,9 @@ if __name__ == '__main__':
         skyalert_app, skyalert_dlg = appCheck('SkyAlert', 'win32', r"C:\Users\User\AppData\Local\Apps\2.0\475JLOEP.26Q\DVHXWNG3.LPN\skya..tion_60722f238ee807df_0001.0000_f201e82b72b5ab68\SkyAlert.exe", 'SkyAlert')
         skyalert_dlg.minimize()
         skyalert_dlg.restore()
-        time.sleep(3)
+        time.sleep(5)
         
         # Open "Settings" tab and then "Program Settings" window of SkyAlert.
-        skyalert_dlg.set_focus()
-        time.sleep(1)
         skyalert_dlg.type_keys("%s")
         time.sleep(1)
         skyalert_dlg.type_keys("P")
