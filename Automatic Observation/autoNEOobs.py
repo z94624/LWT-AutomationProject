@@ -146,6 +146,7 @@ if __name__ == '__main__':
 
         # ACP Observatory Control Software: connect to MaxIm DL ("Camera" tab) and TheSky ("Telescope" tab).
         acp_app, acp_dlg = appCheck('ACP Observatory Control Software', 'uia', r"C:\Program Files (x86)\ACP Obs Control\acp.exe", 'ACP Observatory Control Software')
+        time.sleep(3)
         acp_dlg.set_focus()
         acp_dlg['Camera'].select()
         acp_camera = acp_dlg['Camera'].items()[0].texts()[0]
@@ -231,6 +232,9 @@ if __name__ == '__main__':
             acppre_dlg['Setup Weather Server...'].click_input()
             time.sleep(1)
             wea_app, wea_dlg = appConnect('Select Clarity log file', '#32770', False)
+            ## If the default file folder is wrong, you should enter the right one first,
+            ## which is "C:\Users\User\Documents\Interactiveastronomy\SkyAlert\Weatherdata Files",
+            ## and then the ACP will remember the path.
             wea_dlg['ComboBox2'].select('All files (*.*)')
             time.sleep(1)
             wea_dlg['ComboBoxEx'].type_keys('{}.txt'.format(dateDash))
