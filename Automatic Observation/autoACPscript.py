@@ -145,7 +145,7 @@ if __name__ == '__main__':
                 group_max = max([i for i in ini_fin if i[:2] == iniSeque])
                 tempDesig_ok.append(tempDesig[ini_fin.index(group_max)])
                 iniSeque = group_max[2:]
-            except ValueError, MemoryError:
+            except (ValueError, MemoryError):
                 break
         ini_fin_ok = []
         for candy in tempDesig_ok:
@@ -286,7 +286,7 @@ if __name__ == '__main__':
                   to_addr_list = ['lwtgroup@astro.ncu.edu.tw'],
                   cc_addr_list = [], 
                   subject      = '{} - LWT NEO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
-                  message      = 'Bonjour,\n\nI will have an observation from UTC {} to UTC {} tonight!\nOBJECT: {}\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw'.format(breakOn, breakOff, tempDesig_ok), 
+                  message      = "Dear LWT Team,\n\nBEGIN\tUTC {}\nEND\tUTC {}\nNEO\t{}\n\nJian-Fong Huang (smoBEE)\nEMAIL\tsmoBEE@astro.ncu.edu.tw".format(breakOn, breakOff, ', '.join(tempDesig_ok)), 
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
                   password     = '')
         
