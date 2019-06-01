@@ -1,9 +1,11 @@
-import os, requests, time, ephem, sys, smtplib, shutil, pywinauto, pandas as pd, numpy as np
+import os, requests, time, ephem, sys, smtplib, shutil, pywinauto, pandas as pd, numpy as np, ssl
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from glob import glob
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Obtain ephemerides of the NEO by scrawling the NEOCP.
 def scrawlPost(neoName, obsAlt, motion, motForm):
@@ -282,13 +284,26 @@ if __name__ == '__main__':
             lines = file.readlines()
         breaks = [line for line in lines if '#WAITUNTIL' in line]
         breakOff = int(breaks[-1].split(', ')[1].split(':')[0])+1
-        sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw', 
-                  to_addr_list = ['lwtgroup@astro.ncu.edu.tw'],
-                  cc_addr_list = [], 
-                  subject      = '{} - LWT NEO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
-                  message      = "Dear LWT Team,\n\nBEGIN\tUTC {}\nEND\tUTC {}\nNEO\t{}\n\nJian-Fong Huang (smoBEE)\nEMAIL\tsmoBEE@astro.ncu.edu.tw".format(breakOn, breakOff, ', '.join(tempDesig_ok)), 
-                  login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+
+        sender = "lwt@gm.astro.ncu.edu.tw"
+        receiver = "lwtgroup@astro.ncu.edu.tw"
+        password = ""
+        # Create the HTML version of the message
+        obsText = "Dear LWT Team,<br><br>[BEGIN] <b>UTC {}</b><br>[END] <b>UTC {}</b><br>[NEO] <b><a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'>{}</a><b><br>".format(breakOn, breakOff, ', '.join(tempDesig_ok))
+        extText = "<body><h3>External Links:</h3><ul style='list-item-style:none; margin-left:0px;padding-left:0px;'><li><a href='http://www.lulin.ncu.edu.tw/wean/index.html'>鹿林天文台天氣資訊</a></li><li><a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'>MPC - The NEO Confirmation Page</a></li><li><a href='https://cneos.jpl.nasa.gov/ca/''>JPL - NEO Earth Close Approaches</a></li><li><a href='https://minorplanetcenter.net/iau/info/ADES.html'>MPC - ADES Data Submission</a></li></ul><br>============================<br><i>Jian-Fong Huang (smoBEE)</i><br><i>smoBEE@astro.ncu.edu.tw</i><br>11529 台北市南港區研究院路二段128號(中央研究院歷史語言研究所)</body>"
+        # Turn these into html MIMEText objects
+        html = MIMEText(obsText + extText, "html")
+        message = MIMEMultipart() # "alternative"
+        message["Subject"] = "{} - LWT NEO Observation".format(datetime.now().strftime("%Y-%b-%d %H:%M:%S"))
+        message["From"] = sender
+        message["To"] = receiver
+        # Add HTML parts to MIMEMultipart message
+        message.attach(html)
+        # Create secure connection with server and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender, password)
+            server.sendmail(sender, receiver, message.as_string())
         
         # Wait until tomorrow morning (9 am).
         nowH = datetime.now().strftime("%H")
