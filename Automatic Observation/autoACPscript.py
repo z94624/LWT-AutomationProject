@@ -266,7 +266,7 @@ if __name__ == '__main__':
                 with open(script_path, 'a') as file:
                     file.write(';\n#CHAIN D:/LWTdata/LWT_{0}/lulinLWT/{0}-{1}.txt'.format(date, str(num+1).zfill(3)))
             else:
-                cngeowPaths = glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*LWT.txt")
+                cngeowPaths = glob("C:/Users/User/Documents/ACP Astronomy/Plans/cngeow*.txt")
                 cngeowModTimes = [os.path.getctime(i) for i in cngeowPaths]
                 cngeow = cngeowPaths[cngeowModTimes.index(max(cngeowModTimes))].split('\\')[1]
                 with open(script_path, 'a') as file:
