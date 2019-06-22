@@ -205,9 +205,9 @@ if __name__ == '__main__':
         time.sleep(5)
         
         # Open "Settings" tab and then "Program Settings" window of SkyAlert.
-        skyalert_dlg.type_keys("%s")
+        skyalert_dlg.send_keys("%{s}")
         time.sleep(1)
-        skyalert_dlg.type_keys("P")
+        skyalert_dlg.send_keys("p")
         time.sleep(1)
         
         # Open the "Save to..." dialog for saving Weather/Data File.
