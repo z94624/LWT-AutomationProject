@@ -289,10 +289,24 @@ if __name__ == '__main__':
         receiver = "lwtgroup@astro.ncu.edu.tw"
         password = ""
         # Create the HTML version of the message
-        obsText = "Dear LWT Team,<br><br>[BEGIN] <b>UTC {}</b><br>[END] <b>UTC {}</b><br>[NEO] <b><a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'>{}</a><b><br>".format(breakOn, breakOff, ', '.join(tempDesig_ok))
-        extText = "<body><h3>External Links:</h3><ul style='list-item-style:none; margin-left:0px;padding-left:0px;'><li><a href='http://www.lulin.ncu.edu.tw/wean/index.html'>鹿林天文台天氣資訊</a></li><li><a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'>MPC - The NEO Confirmation Page</a></li><li><a href='https://cneos.jpl.nasa.gov/ca/''>JPL - NEO Earth Close Approaches</a></li><li><a href='https://minorplanetcenter.net/iau/info/ADES.html'>MPC - ADES Data Submission</a></li></ul><br>============================<br><i>Jian-Fong Huang (smoBEE)</i><br><i>smoBEE@astro.ncu.edu.tw</i><br>11529 台北市南港區研究院路二段128號(中央研究院歷史語言研究所)</body>"
+        obsText = ("<body>Dear LWT Team,<br><br>"
+         + "<h3>Observation Information:</h3>"
+         + "<div style='background-color: #cce6ff; border: 1px solid #0084ff'>"
+         + "[BEGIN] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b><br>".format(breakOn)
+         + "[END] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b><br>".format(breakOff)
+         + "[NEO] <a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'><b>{}</b></a></div><br>").format(', '.join(tempDesig_ok))
+        extText = ("<h3>External Links:</h3>"
+         + "<ul style='list-item-style: none; margin-left: 0; padding-left: 0; background-color: #ffcce6; border: 1px solid #ff0084'>"
+         + "<li><a href='http://www.lulin.ncu.edu.tw/wean/index.html'>鹿林天文台天氣資訊</a></li>"
+         + "<li><a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'>MPC - The NEO Confirmation Page</a></li>"
+         + "<li><a href='https://cneos.jpl.nasa.gov/ca/''>JPL - NEO Earth Close Approaches</a></li>"
+         + "<li><a href='https://minorplanetcenter.net/iau/info/ADES.html'>MPC - ADES Data Submission</a></li></ul>")
+        footText = ("<footer><br>============================<br>"
+         + "<i>Jian-Fong Huang (smoBEE)</i><br>"
+         + "<i>smoBEE@astro.ncu.edu.tw</i><br>"
+         + "11529 台北市南港區研究院路二段128號(中央研究院歷史語言研究所)</footer></body>")
         # Turn these into html MIMEText objects
-        html = MIMEText(obsText + extText, "html")
+        html = MIMEText(obsText + extText + footText, "html")
         message = MIMEMultipart() # "alternative"
         message["Subject"] = "{} - LWT NEO Observation".format(datetime.now().strftime("%Y-%b-%d %H:%M:%S"))
         message["From"] = sender
