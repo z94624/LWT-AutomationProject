@@ -1,5 +1,5 @@
 # LWT-AutomationProject
-## Lulin Widefield Telescope (LWT): a Robotic Telescope for the Near-Earth Object Follow-up Observation
+### Lulin Widefield Telescope (LWT): a Robotic Telescope for the Near-Earth Object Follow-up Observation
 
 The LWT is located at the [Lulin Observatory](https://en.wikipedia.org/wiki/Lulin_Observatory) and is operated by Graduate Institute of Astronomy, National Central University, Taiwan.
 
