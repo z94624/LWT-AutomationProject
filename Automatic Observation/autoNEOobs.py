@@ -148,7 +148,7 @@ if __name__ == '__main__':
         acp_app, acp_dlg = appCheck('ACP Observatory Control Software', 'uia', r"C:\Program Files (x86)\ACP Obs Control\acp.exe", 'ACP Observatory Control Software')
         time.sleep(3)
         acp_dlg.set_focus()
-        acp_dlg['Camera'].select()
+        acp_dlg['Camera'].click_input() # .select()
         acp_camera = acp_dlg['Camera'].items()[0].texts()[0]
         if acp_camera == 'Connect':
             acp_dlg['Connect'].select()
