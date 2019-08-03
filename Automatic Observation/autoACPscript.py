@@ -129,7 +129,7 @@ if __name__ == '__main__':
                       subject      = 'LWT has "NO" observation today!', 
                       message      = 'Bonjour,\n\nPlease run the script of Prof. Ngeow today!\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw', 
                       login        = 'lwt@gm.astro.ncu.edu.tw', 
-                      password     = '')
+                      password     = 'lulin1478963')
             sys.exit()
         else:
             pass
@@ -280,20 +280,28 @@ if __name__ == '__main__':
             lines = file.readlines()
         breaks = [line for line in lines if '#WAITUNTIL' in line]
         breakOn = int(breaks[0].split(', ')[1].split(':')[0])
+        if breakOn+8 < 24:
+        	breakOnUTCp8 = str(breakOn+8 - 12) + "pm"
+        else:
+            breakOnUTCp8 = str(breakOn+8 - 24) + "am"
         with open('D:/LWTdata/LWT_{0}/lulinLWT/{0}-{1}.txt'.format(date, str(len(tempDesig_ok)-1).zfill(3)), 'r') as file:
             lines = file.readlines()
         breaks = [line for line in lines if '#WAITUNTIL' in line]
         breakOff = int(breaks[-1].split(', ')[1].split(':')[0])+1
+        if breakOff+8 < 24:
+        	breakOffUTCp8 = str(breakOff+8 - 12) + "pm"
+        else:
+            breakOffUTCp8 = str(breakOff+8 - 24) + "am"
 
         sender = "lwt@gm.astro.ncu.edu.tw"
         receiver = "lwtgroup@astro.ncu.edu.tw"
-        password = ""
+        password = "lulin1478963"
         # Create the HTML version of the message
         obsText = ("<body>Dear LWT Team,<br><br>"
          + "<h3>Observation Information:</h3>"
          + "<div style='background-color: #cce6ff; border: 1px solid #0084ff'>"
-         + "[BEGIN] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b><br>".format(breakOn)
-         + "[END] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b><br>".format(breakOff)
+         + "[BEGIN] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b> | UTC+8 &emsp; <b style='color: blue; font-size: 30px;'>{}</b><br>".format(breakOn, breakOnUTCp8)
+         + "[END] UTC &emsp; <b style='color: red; font-size: 30px;'>{}</b> | UTC+8 &emsp; <b style='color: blue; font-size: 30px;'>{}</b><br>".format(breakOff, breakOffUTCp8)
          + "[NEO] <a href='https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html'><b>{}</b></a></div><br>").format(', '.join(tempDesig_ok))
         extText = ("<h3>External Links:</h3>"
          + "<ul style='list-item-style: none; margin-left: 0; padding-left: 0; background-color: #ffcce6; border: 1px solid #ff0084'>"
@@ -333,9 +341,9 @@ if __name__ == '__main__':
         driver.find_element_by_id("identifierId").clear()
         driver.find_element_by_id("identifierId").send_keys("lwt@gm.astro.ncu.edu.tw")
         driver.find_element_by_id("identifierId").send_keys(Keys.ENTER)
-        time.sleep(3)
+        time.sleep(10)
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("")
+        driver.find_element_by_name("password").send_keys("lulin1478963")
         driver.find_element_by_name("password").send_keys(Keys.ENTER)
         time.sleep(10)
         
@@ -399,4 +407,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoACPscript ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')

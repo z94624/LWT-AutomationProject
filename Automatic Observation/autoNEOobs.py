@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
         # ACP Observatory Control Software: connect to MaxIm DL ("Camera" tab) and TheSky ("Telescope" tab).
         acp_app, acp_dlg = appCheck('ACP Observatory Control Software', 'uia', r"C:\Program Files (x86)\ACP Obs Control\acp.exe", 'ACP Observatory Control Software')
-        time.sleep(3)
+        time.sleep(10) # Line.151 => Try for [RuntimeError] There is no active desktop required for moving mouse cursor!
         acp_dlg.set_focus()
         acp_dlg['Camera'].click_input() # .select()
         acp_camera = acp_dlg['Camera'].items()[0].texts()[0]
@@ -367,4 +367,4 @@ if __name__ == '__main__':
                   subject      = '[ERROR] autoNEOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
                   login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = '')
+                  password     = 'lulin1478963')
