@@ -81,10 +81,10 @@ if __name__ == '__main__':
 				shutil.copytree(path, r"\\192.168.8.2\AutoFTP\LWT_{}\{}".format(date, path.split('\\')[-1]))
 
 	except Exception as e:
-		sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw',
+		sendemail(from_addr    = '',
 			to_addr_list = ['smoBEE@astro.ncu.edu.tw'],
 			cc_addr_list = [],
 			subject      = '[ERROR] autoFTPobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")),
 			message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
-			login        = 'lwt@gm.astro.ncu.edu.tw',
+			login        = '',
 			password     = '')

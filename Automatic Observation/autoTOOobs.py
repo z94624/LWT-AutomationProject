@@ -134,12 +134,12 @@ if __name__ == '__main__':
         # Email users of the beginning time and the end time of their target's observation.
         obsBegin = int(ephemsOK[0].split(' ')[3].strip('0'))
         obsEnd = int(ephemsOK[-1].split(' ')[3].strip('0'))
-        sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw', 
+        sendemail(from_addr    = '', 
                   to_addr_list = [usrEmail],
                   cc_addr_list = [], 
                   subject      = '{} - [{}] LWT ToO Observation'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S"), usrName),
-                  message      = "Dear {},\n\nYour observation of {} will begin from UTC{} to UTC{}!\nMerci beaucoup!\n\nAmuse-toi bien,\nThe LWT Automation System\nemail: lwt@gm.astro.ncu.edu.tw",
-                  login        = 'lwt@gm.astro.ncu.edu.tw', 
+                  message      = "Dear {},\n\nYour observation of {} will begin from UTC{} to UTC{}!\nMerci beaucoup!\n\nAmuse-toi bien,\nThe LWT Automation System\nemail: ",
+                  login        = '', 
                   password     = '')
         
         # Basic information of the ACP script.
@@ -240,10 +240,10 @@ if __name__ == '__main__':
 
     # If there are errors occur, emailing users about the error message encountered in Python.
     except Exception as e:
-        sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw', 
+        sendemail(from_addr    = '', 
                   to_addr_list = [usrEmail],
                   cc_addr_list = [], 
                   subject      = '[ERROR] autoTOOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}\nPlease contact Huang Jian-Fong(smoBEE@astro.ncu.edu.tw) to fix the problem!".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
-                  login        = 'lwt@gm.astro.ncu.edu.tw', 
+                  login        = '', 
                   password     = '')

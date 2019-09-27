@@ -123,13 +123,13 @@ if __name__ == '__main__':
         # Email users of no observable NEOs today, and the automation system will run Prof. Ngeow's script instead.
         if ini_fin == []:
             shutil.rmtree("D:/LWTdata/LWT_{}/lulinLWT".format(date))
-            sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw', 
+            sendemail(from_addr    = '', 
                       to_addr_list = ['lwtgroup@astro.ncu.edu.tw'],
                       cc_addr_list = [], 
                       subject      = 'LWT has "NO" observation today!', 
                       message      = 'Bonjour,\n\nPlease run the script of Prof. Ngeow today!\nMerci beaucoup!\n\nAmuse-toi bien,\nJian-Fong Huang (smoBEE)\nemail: smoBEE@astro.ncu.edu.tw', 
-                      login        = 'lwt@gm.astro.ncu.edu.tw', 
-                      password     = 'lulin1478963')
+                      login        = '', 
+                      password     = '')
             sys.exit()
         else:
             pass
@@ -293,9 +293,9 @@ if __name__ == '__main__':
         else:
             breakOffUTCp8 = str(breakOff+8 - 24) + "am"
 
-        sender = "lwt@gm.astro.ncu.edu.tw"
+        sender = ""
         receiver = "lwtgroup@astro.ncu.edu.tw"
-        password = "lulin1478963"
+        password = ""
         # Create the HTML version of the message
         obsText = ("<body>Dear LWT Team,<br><br>"
          + "<h3>Observation Information:</h3>"
@@ -339,11 +339,11 @@ if __name__ == '__main__':
         driver.implicitly_wait(30)
         driver.get("https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fsites.google.com%2Fa%2Fgm.astro.ncu.edu.tw%2Flulin-wt%2Fhome%2Fneo-history&followup=https%3A%2F%2Fsites.google.com%2Fa%2Fgm.astro.ncu.edu.tw%2Flulin-wt%2Fhome%2Fneo-history&hd=gm.astro.ncu.edu.tw&service=jotspot&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
         driver.find_element_by_id("identifierId").clear()
-        driver.find_element_by_id("identifierId").send_keys("lwt@gm.astro.ncu.edu.tw")
+        driver.find_element_by_id("identifierId").send_keys("")
         driver.find_element_by_id("identifierId").send_keys(Keys.ENTER)
         time.sleep(10)
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("lulin1478963")
+        driver.find_element_by_name("password").send_keys("")
         driver.find_element_by_name("password").send_keys(Keys.ENTER)
         time.sleep(10)
         
@@ -401,10 +401,10 @@ if __name__ == '__main__':
 
     # If there are errors occur, email users of the error message.
     except Exception as e:
-        sendemail(from_addr    = 'lwt@gm.astro.ncu.edu.tw', 
+        sendemail(from_addr    = '', 
                   to_addr_list = ['smoBEE@astro.ncu.edu.tw'],
                   cc_addr_list = [], 
                   subject      = '[ERROR] autoACPscript ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
-                  login        = 'lwt@gm.astro.ncu.edu.tw', 
-                  password     = 'lulin1478963')
+                  login        = '', 
+                  password     = '')
