@@ -205,9 +205,9 @@ if __name__ == '__main__':
         time.sleep(5)
         
         # Open "Settings" tab and then "Program Settings" window of SkyAlert.
-        skyalert_dlg.send_keys("%{s}")
+        pywinauto.keyboard.send_keys("%{s}")
         time.sleep(1)
-        skyalert_dlg.send_keys("p")
+        pywinauto.keyboard.send_keys("p")
         time.sleep(1)
         
         # Open the "Save to..." dialog for saving Weather/Data File.
@@ -361,8 +361,8 @@ if __name__ == '__main__':
 
     # If there are errors occur, emailing users about the error message encountered in Python.
     except Exception as e:
-        sendemail(from_addr    = 'lwt@astro.ncu.edu.tw', 
-                  to_addr_list = ['smoBEE@astro.ncu.edu.tw'],
+        sendemail(from_addr    = '', 
+                  to_addr_list = [''],
                   cc_addr_list = [], 
                   subject      = '[ERROR] autoNEOobs ({})'.format(datetime.now().strftime("%Y-%b-%d %H:%M:%S")), 
                   message      = "Error on line {}: [{}] {}".format(sys.exc_info()[-1].tb_lineno, type(e).__name__, e),
